@@ -14,7 +14,7 @@ const WASM_TARGET: &str = "wasm32-unknown-unknown";
 const OPT_LEVEL_Z_CONFIG: &str = "profile.release.opt-level='z'";
 const UNSTABLE_FLAGS: &[&str] = &[
     "build-std=std,panic_abort",
-    "build-std-features=panic_immediate_abort",
+    "panic-immediate-abort",
 ];
 
 #[derive(Clone, Debug, Default)]
