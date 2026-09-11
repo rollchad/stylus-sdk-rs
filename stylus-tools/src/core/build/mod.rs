@@ -12,12 +12,10 @@ use crate::core::project::contract::Contract;
 
 const WASM_TARGET: &str = "wasm32-unknown-unknown";
 const OPT_LEVEL_Z_CONFIG: &str = "profile.release.opt-level='z'";
+const PANIC_IMMEDIATE_ABORT_CONFIG: &str = "profile.release.panic='immediate-abort'";
 const UNSTABLE_FLAGS: &[&str] = &[
     "build-std=std,panic_abort",
     "unstable-options",
-];
-const RUSTC_PANIC_FLAGS: &[&str] = &[
-    "-Cpanic=immediate-abort",
 ];
 
 #[derive(Clone, Debug, Default)]
@@ -65,7 +63,7 @@ pub fn build_contract(contract: &Contract, config: &BuildConfig) -> Result<PathB
     }
     if !contract.stable() {
         cmd = cmd.args(UNSTABLE_FLAGS.iter().flat_map(|flag| ["-Z", flag]));
-        cmd = cmd.arg("--").args(RUSTC_PANIC_FLAGS);
+        cmd = cmd.args(["--config", PANIC_IMMEDIATE_ABORT_CONFIG]);
     }
     if matches!(config.opt_level, OptLevel::Z) {
         cmd = cmd.args(["--config", OPT_LEVEL_Z_CONFIG]);
